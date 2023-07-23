@@ -31,7 +31,7 @@ exact dvd_mul_right 10 (7 ^(2*n_n+1)),
 end
 
 
-theorem warmup_2 : ∀ n : ℕ , 7^n ≡ 3^n [MOD 4] :=
+theorem warmup : ∀ n : ℕ , 7^n ≡ 3^n [MOD 4] :=
 begin
 intros,
 exact nat.modeq.pow n 
@@ -49,16 +49,23 @@ norm_num,
 rw pow_mul,
 rw pow_mul,
 norm_num,
-     have H1 : (49^n ≡ 9^n [MOD 10]), 
+     have H1 : (49^n ≡ 9^n [MOD 10]) := 
      begin
           exact nat.modeq.pow n rfl,
      end,
-     have H2 : (49 ^ n * 7 ≡ 9 ^ n * 7 [MOD 10]), 
-     exact nat.modeq.mul H1 rfl,
-     have H3 : (49 ^ n * 7 + 9 ^ n * 3 ≡ 9 ^ n * 7 + 9 ^ n * 3 [MOD 10]), 
-     exact nat.modeq.add_right (9 ^ n * 3) H2,
-     have H4 : (9 ^ n * 7 + 9 ^ n * 3 ≡ 0 [MOD 10]), ring_nf,  
-     refine nat.modeq_zero_iff_dvd.mpr _,
-     exact dvd.intro (9 ^ n) rfl,
+     have H2 : (49 ^ n * 7 ≡ 9 ^ n * 7 [MOD 10]) :=
+     begin
+          exact nat.modeq.mul H1 rfl,
+     end,
+     have H3 : (49 ^ n * 7 + 9 ^ n * 3 ≡ 9 ^ n * 7 + 9 ^ n * 3 [MOD 10]) 
+     := 
+     begin
+          exact nat.modeq.add_right (9 ^ n * 3) H2,
+     end,
+     have H4 : (9 ^ n * 7 + 9 ^ n * 3 ≡ 0 [MOD 10]) :=
+     begin
+          ring_nf, refine nat.modeq_zero_iff_dvd.mpr _,
+          exact dvd.intro (9 ^ n) rfl,
+     end,
      exact nat.modeq.trans H3 H4,
 end
