@@ -1,8 +1,10 @@
 import data.nat.basic
 import data.nat.pow
 import tactic.linarith
+import data.nat.modeq
+import tactic.norm_num
 
-theorem hatvanyok : ∀ n : ℕ , 10 ∣ (7^(2*n+1) + 3^(2*n+1)):=
+theorem hatvanyok_1 : ∀ n : ℕ , 10 ∣ (7^(2*n+1) + 3^(2*n+1)):=
 begin
 intros n,
 induction n,
@@ -26,4 +28,37 @@ have lem : 7 ^ (2 * n_n.succ + 1) + 3 ^ (2 * n_n.succ + 1) = 4 * (10*7^(2*n_n+1)
 rw lem,
 refine has_dvd.dvd.linear_comb _ n_ih 4 9,
 exact dvd_mul_right 10 (7 ^(2*n_n+1)),
+end
+
+
+theorem warmup_2 : ∀ n : ℕ , 7^n ≡ 3^n [MOD 4] :=
+begin
+intros,
+exact nat.modeq.pow n 
+     begin 
+          refl 
+     end,
+end
+
+theorem hatvanyok_2 : ∀ n : ℕ , 7^(2*n+1) + 3^(2*n+1) ≡ 0 [MOD 10] :=
+begin
+intros,
+rw pow_add,
+rw pow_add,
+norm_num,
+rw pow_mul,
+rw pow_mul,
+norm_num,
+     have H1 : (49^n ≡ 9^n [MOD 10]), 
+     begin
+          exact nat.modeq.pow n rfl,
+     end,
+     have H2 : (49 ^ n * 7 ≡ 9 ^ n * 7 [MOD 10]), 
+     exact nat.modeq.mul H1 rfl,
+     have H3 : (49 ^ n * 7 + 9 ^ n * 3 ≡ 9 ^ n * 7 + 9 ^ n * 3 [MOD 10]), 
+     exact nat.modeq.add_right (9 ^ n * 3) H2,
+     have H4 : (9 ^ n * 7 + 9 ^ n * 3 ≡ 0 [MOD 10]), ring_nf,  
+     refine nat.modeq_zero_iff_dvd.mpr _,
+     exact dvd.intro (9 ^ n) rfl,
+     exact nat.modeq.trans H3 H4,
 end
