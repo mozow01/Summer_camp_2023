@@ -61,12 +61,19 @@ Notation "Γ '⊢' t '[:]' A" := (Tyty Γ t A) (at level 70, no associativity) :
 
 Notation "'⊢' t '[:]' A" := (Tyty nil t A) (at level 70, no associativity) : type_scope.
 
+(*Ltac a taktikadefináló nyelv megnyitása olyan esetre, amikor sok hasonló lépést kell csinálni és ezt új taktikába szervezzük. Az új saját taktika az "IndexTactic", ami a De Bruijn-indexekkel kapcsolatos komputációkat végzi.*)
+
+Ltac IndexTactic :=
+  repeat apply Ty_indS;
+  repeat apply Ty_ind0.
+
 Lemma First_typeability_rule_for_snd_term : forall (Γ : Cntxt) (A B : Typ), 
 A :: B :: Γ ⊢ (ind 1) [:] B.
 Proof.
 intros.
-apply (Ty_indS).
-apply (Ty_ind0).
+IndexTactic.
+(* apply (Ty_indS).
+apply (Ty_ind0). *)
 Qed.
 
 
@@ -77,11 +84,10 @@ intros.
 exists (lam A (app (ind 2) ((app (ind 1) (ind 0)) ))).
 apply (Ty_lam).
 apply Ty_app with (A:=B) (B:=C).
-apply Ty_indS.
-apply Ty_indS.
-apply Ty_ind0.
+    (*all: ___ minden célon a ___ parancsot hajtja végre. *)
+all: IndexTactic.
+    (*apply Ty_indS. apply Ty_indS. apply Ty_ind0. *)
 apply Ty_app with (A:=A) (B:=B).
-apply Ty_indS.
-apply Ty_ind0.
-apply Ty_ind0.
+all: IndexTactic.
+    (* apply Ty_indS. apply Ty_ind0. apply Ty_ind0.*)
 Qed.
