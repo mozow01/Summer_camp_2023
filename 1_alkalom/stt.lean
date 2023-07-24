@@ -6,7 +6,7 @@ inductive Typ : Type where
   | Arrow : Typ → Typ → Typ
 
 notation:70 "ι" => Typ.Iota
-notation:40 lhs:40 " ⇒ " rhs:40 => Typ.Arrow lhs rhs
+notation:70 lhs:70 " ⇒ " rhs:70 => Typ.Arrow lhs rhs
 
 #check ι ⇒ ι
 
@@ -54,9 +54,31 @@ inductive Tyty : Cntxt → Trm → Typ → Prop where
       Tyty Γ t (A ⇒ B) → Tyty Γ s A → Tyty Γ (t $ s) B
   | Ty_lam (Γ : Cntxt) (A B : Typ) (t : Trm) : 
       Tyty (A :: Γ) t B → Tyty Γ (lam A t) (A ⇒ B)
-
+open Tyty
 notation:20 Γ:20 " ⊢ " t:20 " [:] " A:20 => Tyty Γ t A
-notation:20 " ⊢ " t:20 " [:] " A:20 => Tyty List.nil t A
+notation:20 " ⊢ " t:20 " [:] " A:20 => Tyty [] t A
+
+
+-- Ezzel azt mondjuk, hogy a simp taktika próbálkozzon ezekkel a levezetési lépésekkel is,
+-- név szerint a De Bruijn-indexekkel kapcsolatos komputációkat is elvégzi.
+attribute [simp] Ty_ind0
+attribute [simp] Ty_indS
 
 theorem First_typeability_rule_for_snd_term (Γ : Cntxt) (A B : Typ) : 
-  A :: B :: Γ ⊢ (ind 1) [:] B := sorry
+  A :: B :: Γ ⊢ (ind 1) [:] B := by
+--   apply Ty_indS
+--   apply Ty_ind0
+-- vagy rövidebben
+--   simp [Ty_ind0, Ty_indS]
+-- vagy még rövidebben
+  simp
+
+theorem Chain_rule : ∀ (A B C : Typ), ∃ (P : Trm),
+  A ⇒ B :: B ⇒ C :: [] ⊢ P [:] A ⇒ C := by
+    intros A B C
+    exists (lam A (ind 2 $ ind 1 $ ind 0))
+    apply Ty_lam
+    apply Ty_app _ B C
+    simp
+    apply Ty_app _ A B
+    all_goals simp
