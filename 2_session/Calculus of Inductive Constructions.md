@@ -1,4 +1,4 @@
-# Calculus of Inductive Constructions
+# Calculus of Inductive Constructions (CIC)
 
 Thierry Coquand, Christine Paulin-Mohring implementálták számítógépesen az _Induktív Konstrukciók Kalkulusát_ (CIC, CoC, Coq), ami Peer Martin-Löf típuselméletének átdolgozása. 
 
@@ -35,11 +35,23 @@ _Indukciós szabály:_
 
 ## Bizonyítások típusai
 
-### Implikáció
+### Kondicionális
 
 Bevezetési és kiküszöbölési szabályok:
 
 <img align="center" src="https://i.upmath.me/svg/%5Cfrac%7B%5CGamma%20%5Cvdash%20P%3AA%5Cto%20B%5Cqquad%20%5CGamma%20%5Cvdash%20Q%3AA%7D%7B%5CGamma%20%5Cvdash%20P%20Q%3AB%7D%2C%5Cqquad%20%5Cfrac%7B%5CGamma%5Ccup%5C%7B(x%2CA)%5C%7D%20%5Cvdash%20P%3AB%7D%7B%5CGamma%20%5Cvdash%20%5Clambda%20x%5Ccolon%20%5C!%5C!A.%20P%3AA%5Cto%20B%7D" alt="\frac{\Gamma \vdash P:A\to B\qquad \Gamma \vdash Q:A}{\Gamma \vdash P Q:B},\qquad \frac{\Gamma\cup\{(x,A)\} \vdash P:B}{\Gamma \vdash \lambda x\colon \!\!A. P:A\to B}" />
+
+### Univerzális kvantifikáció
+
+Bevezetési és kiküszöbölési szabályok:
+
+<img src="https://i.upmath.me/svg/%5Cboxed%7B%5Cfrac%7B%5CGamma%20%5Cvdash%20f%3A%5Cforall%20x%3AA%2CB%5Cqquad%20%5CGamma%20%5Cvdash%20a%3AA%7D%7B%5CGamma%20%5Cvdash%20fa%3AB%5Bx%2Fa%5D%7D%5Cqquad%20%5Ctext%7B(apply)%7D%7D" alt="\boxed{\frac{\Gamma \vdash f:\forall x:A,B\qquad \Gamma \vdash a:A}{\Gamma \vdash fa:B[x/a]}\qquad \text{(apply)}}" />
+
+<img src="https://i.upmath.me/svg/%5Cboxed%7B%5Cfrac%7B%5CGamma%5Ccup%5C%7B(x%3AA)%5C%7D%20%5Cvdash%20P%3AB%7D%7B%5CGamma%20%5Cvdash%20%5Clambda%20x%5Ccolon%20%5C!%5C!A.%20P%3A%5Cforall%20x%3AA%2CB%7D%5Cqquad%20%5Ctext%7B(intro)%7D%7D" alt="\boxed{\frac{\Gamma\cup\{(x:A)\} \vdash P:B}{\Gamma \vdash \lambda x\colon \!\!A. P:\forall x:A,B}\qquad \text{(intro)}}" />
+
+Az univerzális kvantifikáció konstans B esetén azonos az kondicionálissal.
+
+Ez utóbbi szabályok a Coq természetes nyelvén (_native language_ of Coq) alapszabály, bele van égetve a nyelvbe, itt lehet megtekinteni: [https://coq.inria.fr/distrib/current/refman/language/cic.html]
 
 ### Konjunkció
 
