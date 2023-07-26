@@ -6,7 +6,8 @@ Természetes számok
 
 Print nat_ind.
 
-(*Taktika a nat-ban való számolásra. Azon alapul, hogy a Presburget-aritmetika (N,+) _eldönthető_ axiómarendszer.*)
+
+(*Taktika a nat-ban való számolásra. Azon alapul, hogy a Presburger-aritmetika (N,+) _eldönthető_ axiómarendszer.*)
 
 Require Import Lia.
 
@@ -24,11 +25,11 @@ Theorem első_n_szám_összege : forall n, 2*(összeg n) = n*(n+1).
 Proof.
 intros.
 induction n.
-simpl.
+compute.
 reflexivity.
 simpl.
 simpl in IHn.
-lia.
+Time lia.
 Show Proof.
 Qed.
 
@@ -57,14 +58,8 @@ Theorem összegtétel : forall t1 t2 : Tree_nat, Tree_nat_sum (node t1 t2) = (Tr
 Proof.
 intros.
 induction t1, t2.
-simpl.
-reflexivity.
-simpl.
-reflexivity.
-simpl.
-reflexivity.
-simpl.
-reflexivity.
+all: auto.
+
 Qed.
 
 (*
@@ -76,23 +71,46 @@ Polimorf fatípus
 
 *)
 
-Inductive Tree_Type : Type :=
-  | tleaf : forall A: Set, A -> Tree_Type
-  | tnode : Tree_Type -> Tree_Type -> Tree_Type.
+Inductive Tree_Type (A: Set) : Type :=
+  | tleaf : A -> Tree_Type A
+  | tnode : Tree_Type A -> Tree_Type A -> Tree_Type A.
 
 Print nat_ind.
 
-(*A típuselméletben értelmeteln állítás:
+(*A típuselméletben értelmetlen állítás: 
 
 Theorem forall t : Tree_nat, t : Tree_Type nat.*)
 
 (*Csak úgy lehet, ha ágyazzuk az egyiket a másikba:*)
 
-Fixpoint beagy (t:Tree_nat) : Tree_Type := 
+Fixpoint beagy (t:Tree_nat) : Tree_Type nat := 
 match t with
   | leaf m => tleaf nat m
-  | node t1 t2 => tnode (beagy t1) (beagy t2)
+  | node t1 t2 => tnode nat (beagy t1) (beagy t2)
 end.
+
+Fixpoint kiagy (t:Tree_Type nat) : Tree_nat := 
+match t with
+  | tleaf _ m => leaf m
+  | tnode _ t1 t2 => node (kiagy t1) (kiagy t2)
+end.
+
+Theorem izomorfia : (forall t : Tree_nat,  kiagy(beagy t) = t) /\ (forall t : Tree_Type nat,  beagy(kiagy t) = t).
+Proof.
+intuition.
+induction t.
+all: auto.
+simpl.
+rewrite IHt1.
+rewrite IHt2.
+reflexivity.
+induction t.
+all: auto.
+simpl.
+rewrite IHt1.
+rewrite IHt2.
+reflexivity.
+Qed.
 
 (*Komputálja legyen szíves a beagy függvényt*)
 
