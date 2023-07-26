@@ -38,5 +38,3 @@ _Indukciós szabály:_
 
 
 
-
-
