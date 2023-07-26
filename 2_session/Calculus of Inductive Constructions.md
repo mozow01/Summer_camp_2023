@@ -33,5 +33,27 @@ _Indukciós szabály:_
 
 <img src="https://i.upmath.me/svg/%5Cfrac%7BP%20%3A%5Ctext%7BTree%5C_nat%7D%5Cto%5Ctext%7BProp%7D%2C%5Cqquad%20%5Cforall%20n%3A%5Ctext%7Bnat%7D%2C%20P(%5Ctext%7Bleaf%20%7Dn)%2C%5Cquad%20%5Cforall%20t%2Ct_0%3A%20%5Ctext%7BTree%5C_nat%7D%2C%20P%20t%20%5Cto%20P%20t_0%20%5Cto%20P%20(%5Ctext%7Bnode%20%7Dt%5C%2Ct_0)%20%7D%7B%5Cforall%20t%20%3A%20%5Ctext%7BTree%5C_nat%7D%2C%20P%20t%7D" alt="\frac{P :\text{Tree\_nat}\to\text{Prop},\qquad \forall n:\text{nat}, P(\text{leaf }n),\quad \forall t,t_0: \text{Tree\_nat}, P t \to P t_0 \to P (\text{node }t\,t_0) }{\forall t : \text{Tree\_nat}, P t}" />
 
+## Bizonyítások típusai
+
+### Implikáció
+
+Bevezetési és kiküszöbölési szabályok:
+
+<img align="center" src="https://i.upmath.me/svg/%5Cfrac%7B%5CGamma%20%5Cvdash%20P%3AA%5Cto%20B%5Cqquad%20%5CGamma%20%5Cvdash%20Q%3AA%7D%7B%5CGamma%20%5Cvdash%20P%20Q%3AB%7D%2C%5Cqquad%20%5Cfrac%7B%5CGamma%5Ccup%5C%7B(x%2CA)%5C%7D%20%5Cvdash%20P%3AB%7D%7B%5CGamma%20%5Cvdash%20%5Clambda%20x%5Ccolon%20%5C!%5C!A.%20P%3AA%5Cto%20B%7D" alt="\frac{\Gamma \vdash P:A\to B\qquad \Gamma \vdash Q:A}{\Gamma \vdash P Q:B},\qquad \frac{\Gamma\cup\{(x,A)\} \vdash P:B}{\Gamma \vdash \lambda x\colon \!\!A. P:A\to B}" />
+
+### Konjunkció
+
+<img src="https://i.upmath.me/svg/%5Cfrac%7Bp%3AA%2C%5Cquad%20q%3AB%7D%7B(p%2Cq)%3AA%5C%26%20B%7D" alt="\frac{p:A,\quad q:B}{(p,q):A\&amp; B}" />
+
+<img src="https://i.upmath.me/svg/%5Cfrac%7Bp%3AA%5C%26%20B%7D%7B%5Ctext%7Bpr%7D_1%20p%3AA%7D%2C%5Cquad%20%5Cfrac%7Bp%3AA%5C%26%20B%7D%7B%5Ctext%7Bpr%7D_2%20p%3AB%7D" alt="\frac{p:A\&amp; B}{\text{pr}_1 p:A},\quad \frac{p:A\&amp; B}{\text{pr}_2 p:B}" />
+
+<img src="https://i.upmath.me/svg/%5Cfrac%7Bp%3AA%5Cto%20P%2C%5Cquad%20q%3AB%5Cto%20P%20%7D%7B(p%2Cq)%3AA%5C%26%20B%5Cto%20P%7D" alt="\frac{p:A\to P,\quad q:B\to P }{(p,q):A\&amp; B\to P}" />
+
+<img src="https://i.upmath.me/svg/%5Cfrac%7BP%3AA%5C%26%20B%5Cto%20P%2C%5Cquad%20%5Cforall%20p%3AA%2C%5Cforall%20q%3AB%2C%20P(p%2Cq)%7D%7B%5Cforall%20r%3AA%5C%26%20B%2CPr%7D%20" alt="\frac{P:A\&amp; B\to P,\quad \forall p:A,\forall q:B, P(p,q)}{\forall r:A\&amp; B,Pr} " />
+
+
+
+
+
 
 
