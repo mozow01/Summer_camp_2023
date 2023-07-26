@@ -81,7 +81,7 @@ Print nat_ind.
 
 Theorem forall t : Tree_nat, t : Tree_Type nat.*)
 
-(*Csak úgy lehet, ha ágyazzuk az egyiket a másikba:*)
+(*Csak úgy lehet, ha ágyazzuk az egyiket a másikba... *)
 
 Fixpoint beagy (t:Tree_nat) : Tree_Type nat := 
 match t with
@@ -89,11 +89,21 @@ match t with
   | node t1 t2 => tnode nat (beagy t1) (beagy t2)
 end.
 
+(*... vagy a másikat az egyikbe: *)
+
 Fixpoint kiagy (t:Tree_Type nat) : Tree_nat := 
 match t with
   | tleaf _ m => leaf m
   | tnode _ t1 t2 => node (kiagy t1) (kiagy t2)
 end.
+
+(*Komputálja legyen szíves a beagy függvényt*)
+
+Eval compute in beagy (node (leaf 1) (leaf 2)).
+
+
+
+(*Mivel ez kölcsönösen megtehető, ezért felvetődik a kérdés, hogy ez a két típus "izomorf". Izomorfnak nevezzük az A típust a B-vel, ha vannak u:A -> B és v:B -> A, hogy (u(v(x))=x és v(u(y))=y. Ezt tételbenis kimondjuk:*)
 
 Theorem izomorfia : (forall t : Tree_nat,  kiagy(beagy t) = t) /\ (forall t : Tree_Type nat,  beagy(kiagy t) = t).
 Proof.
@@ -111,10 +121,6 @@ rewrite IHt1.
 rewrite IHt2.
 reflexivity.
 Qed.
-
-(*Komputálja legyen szíves a beagy függvényt*)
-
-Eval compute in beagy (node (leaf 1) (leaf 2)).
 
 
 (*
