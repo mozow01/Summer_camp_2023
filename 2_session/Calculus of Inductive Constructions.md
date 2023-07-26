@@ -31,11 +31,7 @@ _Konstruktorok:_
 
 _Indukciós szabály:_
 
-<img src="https://i.upmath.me/svg/%5Cfrac%7B%20n%3A%5Ctext%7Bnat%7D%7D%7B%5Ctext%7Bleaf%20%7D%20n%3A%20%5Ctext%7BTree%5C_nat%7D%7D" alt="\frac{ n:\text{nat}}{\text{leaf } n: \text{Tree\_nat}}" />
-
-<img src="https://i.upmath.me/svg/%5Cfrac%7B%20t1%3A%5Ctext%7BTree%5C_nat%7D%2C%5Cqquad%20t2%3A%5Ctext%7BTree%5C_nat%7D%7D%7B%5Ctext%7Bnode%20%7Dt1%5C%2C%20t2%20%3A%20%5Ctext%7BTree%5C_nat%7D%7D" alt="\frac{ t1:\text{Tree\_nat},\qquad t2:\text{Tree\_nat}}{\text{node }t1\, t2 : \text{Tree\_nat}}" />
-
-
+<img src="https://i.upmath.me/svg/%5Cfrac%7BP%20%3A%5Ctext%7BTree%5C_nat%7D%5Cto%5Ctext%7BProp%7D%2C%5Cqquad%20%5Cforall%20n%3A%5Ctext%7Bnat%7D%2C%20P(%5Ctext%7Bleaf%20%7Dn)%2C%5Cquad%20%5Cforall%20t%2Ct_0%3A%20%5Ctext%7BTree%5C_nat%7D%2C%20P%20t%20%5Cto%20P%20t_0%20%5Cto%20P%20(%5Ctext%7Bnode%20%7Dt%5C%2Ct_0))%20%7D%7B%5Cforall%20t%20%3A%20%5Ctext%7BTree%5C_nat%7D%2C%20P%20t%7D" alt="\frac{P :\text{Tree\_nat}\to\text{Prop},\qquad \forall n:\text{nat}, P(\text{leaf }n),\quad \forall t,t_0: \text{Tree\_nat}, P t \to P t_0 \to P (\text{node }t\,t_0)) }{\forall t : \text{Tree\_nat}, P t}" />
 
 
 
