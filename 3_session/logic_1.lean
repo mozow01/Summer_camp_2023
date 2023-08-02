@@ -56,7 +56,7 @@ end
 theorem impl_and_disj : ∀ (A B : Prop), ( (¬ A) ∨ B ) → A → B :=
 begin
 intros A B x,
-cases x with y z, -- igazi esetszétválasztás
+cases x with y z, -- this is indeed proof by cases bc here we have "or"
 intros w,
 contradiction,
 intros w,
@@ -68,7 +68,7 @@ open classical
 theorem disj_and_impl : ∀ (A B : Prop), (A → B) → ( (¬ A) ∨ B ) :=
 begin
 intros A B x,
-have y := em A, -- em A a "bizonyítása" A ∨ ¬ A -nak (: A ∨ ¬ A)
+have y := em A, -- "em A" is the inhabitant of a the proposition A ∨ ¬ A  (alternative solution: "have y := begin from em A end")
 cases y with H1 H2,
 right,
 apply x, exact H1,
