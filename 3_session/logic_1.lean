@@ -14,7 +14,7 @@
 --          ------------------------------------------------
 --                              A ⊢ C
 --                           -----------
---                              A → C
+--                            ⊢ A → C
 
 -- https://leanprover.github.io/theorem_proving_in_lean/tactics.html#basic-tactics
 
@@ -23,13 +23,12 @@
 
 theorem Chain_rule : ∀ (A B C : Prop), ( (A → B) ∧ (B → C) ) → A → C :=
 begin
-intros A B C x,
+intros A B C x y,
 have H1 : A → B :=
 begin
 from and.left x,
 end,
 have H2 : B → C := and.right x,
-intros y,
 apply H2,
 apply H1,
 exact y,
