@@ -102,6 +102,48 @@ Qed.
 https://en.wikipedia.org/wiki/De_Bruijn_index
 http://alexandria.tue.nl/repository/freearticles/597619.pdf
 
+λ10 megfelel: λx.yx
+
+
+                    1   0
+                     \ /  
+                      $
+                      |
+                      λ
+                 -----------
+                      |
+                      λ         0. szabad változó (y)
+
+
+λ02 megfelel: λx.xz (abban az értelenben, hogy y rejtve van)
+
+
+                    0   2
+                     \ /  
+                      $
+                      |
+                      λ
+                 -----------
+                      |
+                      λ         0. szabad változó (y)
+                      |
+                      λ         1. szabad változó (z)
+
+λλ02 megfelel: λy.λx.xz
+
+
+                    0   2
+                     \ /  
+                      $
+                      |
+                      λ
+                      |
+                      λ         
+-----------------------------------------------
+                      |
+                      λ         0. szabad változó (z)
+
+
 λ1(λ1(3λ13)) megfelel: λx.v(λy.x(wλz.(yv)))
 
 (szokás szerint az applikáció jele $)
@@ -156,7 +198,7 @@ s = (..., t_2, t_1, t_0)
 
 és egy szingli term: P. Ekkor
 
-"Sub P n s" 
+"Sub P n s" (P[...n/s_n...]) 
 
 rekurzívan lesz értelmezve és úgy mondjuk ki, hogy 
 
@@ -167,11 +209,11 @@ Levelek:
 
    ha az n-edik szabad változóba akarunk behelyettesíteni,
    akkor a termsorozat n. elemét olvassuk ki:
-    (..., t_2, t_1, t_0)
+    (t_0, t_1, t_2, ...)
                 ↑
               ind 1
               
-Az applikációk kompozicionálisan helyettesítendők.
+(Az applikációkba való helyettesítés problémamentes kompozicionálisan helyettesítendők.)
 
 A lambdák viszont a indexelését elrontják:
 
@@ -186,13 +228,13 @@ A lambdák viszont a indexelését elrontják:
                        |
                        λ..
                        
-Itt az 1-essel indexelt változó szereplését már 2 jelöli, mert az λ 
-felfelé való mozgási irányt nézve bevitt a kontextusba 0-val indexelve 
+Itt az 1-essel indexelt szabad változó szereplését 2 jelöli, mert a λ 
+felfelé való mozgási irányát nézve bevitt a kontextusba 0-val indexelve 
 egy újabb szabad változót és ezzel eltolta (SHIFT) a változók sorozatát. 
 
 Amire még figyelni kell, hogy abban a termben, amit helyettesítünk
 szerepelhetnek szabad változók. Ezeknek szintjét minden egyes lambdán való
-keresztülhaladáskor (felfelé halad a rekurzió), növelki kell eggyel, hogy
+keresztülhaladáskor (felfelé halad a rekurzió), növelni kell pontosan eggyel, hogy
 megmaradjanak szabad változóknak (LIFT). Ezt fejezik ki az alábbi definíciók. 
                        
                        
@@ -205,7 +247,7 @@ http://www.cs.ru.nl/~Adam.Koprowski/papers/stlc-draft-06.pdf
 *)
 
 (* Ez a rekurzív megadású függvény a t term k-adik szabad változójának 
-szintjét emeli meg n-nel: (hyp m) -> hyp (m+n); k-adik úgy értendő,
+szintjét emeli meg n-nel: (ind m) -> ind (m+n); k-adik úgy értendő,
 hogy az "első a nulladik" és hogy a k-adik változóra mutat egy levél,
 ha éppen hyp k van a levélen, miközben minden λ-n való áthaladáskor a változó 
 indexe nő (pl. a 0. szabad változó indexe az első λ-n való áthaladáskor
@@ -269,7 +311,7 @@ Definition subst P s := subst_aux P 0 s.
 
 (* Ugyanez, azzal a sorozattal, amikor a 0. elem Q, a többi irreleváns *)
 
-Definition substi P Q := subst_aux P 0 (fun k : nat => 
+Definition subs P Q := subst_aux P 0 (fun k : nat => 
 match k with | 0 => Q | S _ => ind 0 end).
 
 Definition s1 (n : nat) : Trm :=
@@ -283,20 +325,20 @@ Definition s1 (n : nat) : Trm :=
 
 Eval compute in subst (lam Iota (app (ind 2) (ind 1))) s1.
 
-Eval compute in substi (lam Iota (app (ind 2) (ind 1))) (app (ind 0) (ind 0)).
+Eval compute in subs (lam Iota (app (ind 2) (ind 1))) (app (ind 0) (ind 0)).
 
 Eval compute in subst_aux (lam Iota (lam Iota (app (ind 0) (ind 2)))) 0 s1.
 
-Eval compute in substi (lam Iota (lam Iota (app (ind 0) (ind 3)))) (app (ind 1) (ind 1)).
+Eval compute in subs (lam Iota (lam Iota (app (ind 0) (ind 3)))) (app (ind 1) (ind 1)).
 
-Eval compute in substi (lam Iota (lam Iota (app (ind 0) (ind 4)))) 
+Eval compute in subs (lam Iota (lam Iota (app (ind 0) (ind 4)))) 
 (lam Iota ( lam Iota (((app (ind 2) (ind 2)))))).
 
 Inductive DefEqu : Cntxt -> Trm -> Trm -> Typ -> Prop := 
   | DefEqu_refl : forall Γ t A, Tyty Γ t A -> DefEqu Γ t t A
   | DefEqu_simm : forall Γ t s A, DefEqu Γ t s A -> DefEqu Γ s t A
   | DefEqu_tran : forall Γ t s r A, DefEqu Γ t s A -> DefEqu Γ s r A -> DefEqu Γ t r A
-  | DefEqu_beta : forall Γ t s A B, Tyty (A :: Γ) t B ->  Tyty Γ s B -> DefEqu Γ (lam A t) (substi t s) B
+  | DefEqu_beta : forall Γ t s A B, Tyty (A :: Γ) t B ->  Tyty Γ s B -> DefEqu Γ (lam A t) (subs t s) B
   | DefEqu_eta : forall Γ f A B, Tyty  Γ f (A → B) -> DefEqu Γ (lam A (app f (ind 0)) ) f B.
 
 
