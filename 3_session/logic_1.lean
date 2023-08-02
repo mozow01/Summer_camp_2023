@@ -1,10 +1,6 @@
+ -- Chain rule for →  
 
-
-
-
-
-theorem Chain_rule : 
-∀ (A B C : Prop), ( (A → B) ∧ (B → C) ) → A → C :=
+theorem Chain_rule : ∀ (A B C : Prop), ( (A → B) ∧ (B → C) ) → A → C :=
 begin
 intros A B C x,
 have H1 : A → B :=
@@ -18,5 +14,5 @@ end,
 intros y,
 apply H2,
 apply H1,
-exact 
+exact y,
 end
