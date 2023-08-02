@@ -102,17 +102,33 @@ Qed.
 https://en.wikipedia.org/wiki/De_Bruijn_index
 http://alexandria.tue.nl/repository/freearticles/597619.pdf
 
-λ10 megfelel: λx.yx
+λ10 megfelel: λx.yx ( y: A -> B |- lambda (x:A). yx : A -> B )
 
+                    zw  x
+                     \ /    konkrét szintaxisfa
+                      yx
+                      |
+                    λx.yx        zw
 
-                    1   0
-                     \ /  
+                    y   x
+                     \ /     absztrakt szintaxisfa
                       $
                       |
-                      λ
+                      λx.      λx.yx  
+                 
+
+                    1   0
+                     \ /     de Bruijn kód
+                      $
+                      |
+                      λ        
                  -----------
                       |
                       λ         0. szabad változó (y)
+
+                                1.
+
+
 
 
 λ02 megfelel: λx.xz (abban az értelenben, hogy y rejtve van)
