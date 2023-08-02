@@ -32,3 +32,21 @@ apply H2,
 apply H1,
 exact y,
 end
+
+#print Chain_rule
+
+--  egy másik stratégiával szétszedjük a feltételt
+
+theorem Chain_rule_2 : ∀ (A B C : Prop), ( (A → B) ∧ (B → C) ) → A → C :=
+begin
+intros A B C x,
+cases x,
+intros y,
+apply x_right,
+apply x_left,
+exact y,
+end
+
+#print Chain_rule_2
+
+
