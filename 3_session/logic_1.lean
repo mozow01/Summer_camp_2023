@@ -43,19 +43,20 @@ end
 theorem Chain_rule_2 : ∀ (A B C : Prop), ( (A → B) ∧ (B → C) ) → A → C :=
 begin
 intros A B C x,
-cases x, -- "cases" is an awkward name, bc there is no proof by cases here
+cases x with H1 H2, -- "cases" is an awkward name, bc there is no proof by cases here
 intros y,
-apply x_right,
-apply x_left,
+apply H2,
+apply H1,
 exact y,
 end
 
 #print Chain_rule_2
 
+
 theorem impl_and_disj : ∀ (A B : Prop), ( (¬ A) ∨ B ) → A → B :=
 begin
 intros A B x,
-cases x with y z, -- igazi esetszétválasztás
+cases x with y z, -- this is indeed proof by cases bc here we have "or"
 intros w,
 contradiction,
 intros w,
@@ -67,7 +68,7 @@ open classical
 theorem disj_and_impl : ∀ (A B : Prop), (A → B) → ( (¬ A) ∨ B ) :=
 begin
 intros A B x,
-have y : A ∨ ¬ A := em A, -- em A a "bizonyítása" A ∨ ¬ A -nak
+have y := em A, -- "em A" is the inhabitant of a the proposition A ∨ ¬ A  (alternative solution: "have y := begin from em A end")
 cases y with H1 H2,
 right,
 apply x, exact H1,
