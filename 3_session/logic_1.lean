@@ -1,4 +1,4 @@
--- Lean3 codes, able to run online lean: https://leanprover-community.github.io/lean-web-editor/ 
+-- Lean3 codes, able to run online in lean3 online editor: https://leanprover-community.github.io/lean-web-editor/ 
 
 
 
