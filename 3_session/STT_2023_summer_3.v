@@ -314,7 +314,7 @@ Definition shift_subst (s : nat -> Trm) (k : nat) : Trm  :=
 Fixpoint subst_aux (t : Trm) (n : nat) (s : nat -> Trm) {struct t} : Trm :=
   match t with
     | ind i => match (Nat.eq_dec n i)  with 
-                 | left _ => s (S n)
+                 | left _ => s n
                  | right _ => ind i
                end
     | app M N => app (subst_aux M n s) (subst_aux N n s)
@@ -356,6 +356,53 @@ Inductive DefEqu : Cntxt -> Trm -> Trm -> Typ -> Prop :=
   | DefEqu_tran : forall Γ t s r A, DefEqu Γ t s A -> DefEqu Γ s r A -> DefEqu Γ t r A
   | DefEqu_beta : forall Γ t s A B, Tyty (A :: Γ) t B ->  Tyty Γ s B -> DefEqu Γ (lam A t) (subs t s) B
   | DefEqu_eta : forall Γ f A B, Tyty  Γ f (A → B) -> DefEqu Γ (lam A (app f (ind 0)) ) f B.
+
+(*
+
+Parameter r : Trm.
+
+Eval compute in (subst_aux (ind 1) 0 ((fun k : nat => 
+match k with | 0 => r | S _ => ind 0 end))).
+
+*)
+
+(*seq_head (P : Trm) az a termsorozat, aminek az első eleme P, a többi az irreleváns ind 0.*)
+
+Definition seq_head (P : Trm) := ((fun k : nat => 
+match k with | 0 => P | S _ => ind 0 end)).
+
+(*subs_lift_plus_one (t r : Trm) az a helyettesítés, amit úgy kapunk, hogy r-et a t term 1-gyel indexelt, tehát második szabad változójába helyettesítünk. r de Bruijn számai persze liftelődnek eggyel, mert . Erre a függvényre azért van szükség, mert a lambdán áthaladva a kontextus bővül eggyel és így nem az első, hanem a második szabad változóba kell behelyettesíteni.*)
+
+Definition subs_lift_plus_one (t r : Trm) := subst_aux t (S 0) (shift_subst (lift_subst (seq_head r))).
+
+Theorem Sub_prop_1 : forall r, (subs (ind 0) r) = r.
+Proof.
+intros.
+compute.
+auto.
+Defined.
+
+Theorem Sub_prop_2 : forall r n, (subs (ind (S n)) r) = ind (S n).
+Proof.
+intros.
+compute.
+auto.
+Defined.
+
+Theorem Sub_prop_3 : forall r t s, (subs (app t s) r) = (app (subs t r) (subs s r)).
+Proof.
+intros.
+induction t.
+all: auto.
+Defined.
+
+Theorem Sub_prop_4 : forall r t A, subs (lam A t) r = lam A (subs_lift_plus_one t r).
+Proof.
+intros.
+induction t.
+all: auto.
+Defined.
+
 
 
 
