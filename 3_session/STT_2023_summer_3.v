@@ -371,7 +371,13 @@ match k with | 0 => r | S _ => ind 0 end))).
 Definition seq_head (P : Trm) := ((fun k : nat => 
 match k with | 0 => P | S _ => ind 0 end)).
 
-(*subs_lift_plus_one (t r : Trm) az a helyettesítés, amit úgy kapunk, hogy r-et a t term 1-gyel indexelt, tehát második szabad változójába helyettesítünk. r de Bruijn számai persze liftelődnek eggyel, mert . Erre a függvényre azért van szükség, mert a lambdán áthaladva a kontextus bővül eggyel és így nem az első, hanem a második szabad változóba kell behelyettesíteni.*)
+(*subs_lift_plus_one (t r : Trm) az a helyettesítés, amit úgy
+ kapunk, hogy r-et a t term 1-gyel indexelt, tehát második
+ szabad változójába helyettesítünk. r de Bruijn számai persze
+ liftelődnek eggyel, mert . Erre a függvényre azért van
+ szükség, mert a lambdán áthaladva a kontextus bővül eggyel és
+ így nem az első, hanem a második szabad változóba kell
+ behelyettesíteni.*)
 
 Definition subs_lift_plus_one (t r : Trm) := subst_aux t (S 0) (shift_subst (lift_subst (seq_head r))).
 
