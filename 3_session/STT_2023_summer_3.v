@@ -354,7 +354,7 @@ Inductive DefEqu : Cntxt -> Trm -> Trm -> Typ -> Prop :=
   | DefEqu_refl : forall Γ t A, Tyty Γ t A -> DefEqu Γ t t A
   | DefEqu_simm : forall Γ t s A, DefEqu Γ t s A -> DefEqu Γ s t A
   | DefEqu_tran : forall Γ t s r A, DefEqu Γ t s A -> DefEqu Γ s r A -> DefEqu Γ t r A
-  | DefEqu_beta : forall Γ t s A B, Tyty (A :: Γ) t B ->  Tyty Γ s B -> DefEqu Γ (lam A t) (subs t s) B
+  | DefEqu_beta : forall Γ t s A B, Tyty (A :: Γ) t B ->  Tyty Γ s B -> DefEqu Γ (app (lam A t) s) (subs t s) B
   | DefEqu_eta : forall Γ f A B, Tyty  Γ f (A → B) -> DefEqu Γ (lam A (app f (ind 0)) ) f B.
 
 (*
