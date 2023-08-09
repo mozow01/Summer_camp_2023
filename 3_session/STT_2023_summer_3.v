@@ -298,7 +298,7 @@ Print Nat.eq_dec.
 Definition lift_subst (s : nat -> Trm) (k : nat) : Trm  :=
   match k with 
      | 0 => lift (s 0) 1
-     | S m => lift (s m) 1
+     | S m => lift (s (S m)) 1
   end.
   
 (* Eltolja a termsorozatot 1-gyel és az első helyre berakja a hyp 0-t. *)
@@ -318,7 +318,7 @@ Fixpoint subst_aux (t : Trm) (n : nat) (s : nat -> Trm) {struct t} : Trm :=
                  | right _ => ind i
                end
     | app M N => app (subst_aux M n s) (subst_aux N n s)
-    | lam A M => lam A (subst_aux M (S n) ( shift_subst (lift_subst s)))
+    | lam A M => lam A (subst_aux M (S n) (shift_subst ( lift_subst s)))
   end.
   
 (* Ugyenez 0-val. *)
@@ -333,7 +333,7 @@ match k with | 0 => Q | S _ => ind 0 end).
 Definition s1 (n : nat) : Trm :=
   match n with
     | 0 => app (ind 0) (ind 0)
-    | S 0 => app (app (ind 0) (ind 0)) (ind 0)
+    | S 0 => app (app (ind 0) (ind 0)) (ind 0) (* (ind 1 $ ind 1) $ ind 1 *)
     | S (S 0) => app (app (ind 0) (ind 0)) (app (ind 0) (ind 0))
     | S (S (S _)) => ind 0
   end.
@@ -341,7 +341,18 @@ Definition s1 (n : nat) : Trm :=
 
 Eval compute in subst (lam Iota (app (ind 2) (ind 1))) s1.
 
+(*
+      1  1
+   2   *
+     *
+     λ
+λ.2(11)
+     *)
+
 Eval compute in subs (lam Iota (app (ind 2) (ind 1))) (app (ind 0) (ind 0)).
+
+Eval compute in subst_aux (lam Iota (app (ind 2) (ind 1))) 1 s1.
+
 
 Eval compute in subst_aux (lam Iota (lam Iota (app (ind 0) (ind 2)))) 0 s1.
 
@@ -380,6 +391,8 @@ match k with | 0 => P | S _ => ind 0 end)).
  behelyettesíteni.*)
 
 Definition subs_lift_plus_one (t r : Trm) := subst_aux t (S 0) (shift_subst (lift_subst (seq_head r))).
+
+Definition subs_lift_plus_one' (t r : Trm) := subst_aux t (S 0) ( (lift_subst (seq_head r))).
 
 Theorem Sub_prop_1 : forall r, (subs (ind 0) r) = r.
 Proof.
