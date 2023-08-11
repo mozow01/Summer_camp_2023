@@ -1,5 +1,5 @@
 (*
-FOL [T, ->, /\, exists] (mert nekem még csak ennyi kell), Bruijn-számozással kezelt individumtermekkel, bizonyítástermek nélkül, a kétváltozós Γ ⊢ A levezetésrelációval. Később bővítendő Bruijn-számozással kezelt levezetéstermekkel és a háromváltozós Γ ⊢ p : A levezetésrelációval.
+FOL [T, ->, /\, exists] (mert nekem még csak ennyi kell), de Bruijn-számozással kezelt individumtermekkel, bizonyítástermek nélkül, a kétváltozós Γ ⊢ A levezetésrelációval. Később bővítendő de Bruijn-számozással kezelt levezetéstermekkel és a háromváltozós Γ ⊢ p : A levezetésrelációval.
 
 TODO néhány kvantoros levezetéses példa és a helyettesítés lemmái
 
