@@ -262,12 +262,7 @@ http://www.cs.ru.nl/~Adam.Koprowski/papers/stlc-draft-06.pdf
 
 *)
 
-(* Ez a rekurzív megadású függvény a t term k-adik szabad változójának 
-szintjét emeli meg n-nel: (ind m) -> ind (m+n); k-adik úgy értendő,
-hogy az "első a nulladik" és hogy a k-adik változóra mutat egy levél,
-ha éppen hyp k van a levélen, miközben minden λ-n való áthaladáskor a változó 
-indexe nő (pl. a 0. szabad változó indexe az első λ-n való áthaladáskor
-már 1 lesz.)  *)
+(* Ez a rekurzív megadású függvény a t term k-adik szabad változójától kezdve az összes szabad változójának szintjét emeli meg n-nel: (ind m) -> ind (m+n); k-adik úgy értendő, hogy az "első a nulladik" és hogy a k-adik változóra mutat egy levél, ha éppen hyp k van a levélen, miközben minden λ-n való áthaladáskor a változó indexe nő (pl. a 0. szabad változó indexe az első λ-n való áthaladáskor már 1 lesz.)  *)
  
 
 Fixpoint lift_aux (n : nat) (t : Trm) (k : nat) {struct t} : Trm :=
@@ -280,17 +275,16 @@ Fixpoint lift_aux (n : nat) (t : Trm) (k : nat) {struct t} : Trm :=
      | lam A M => lam A (lift_aux n M (S k))
    end.
 
-(* A következő függvény az első, azaz 0-val indexelt szabad változót lifteli *)
+(* A következő függvény az összes szabad változót lifteli *)
 
 Definition lift P n := lift_aux n P 0.
 
 
 Eval compute in lift (lam Iota (app (ind 0) (ind 1))) 1. 
 
-
 Eval compute in lift (lam Iota (lam Iota (app (ind 0) (ind 1)))) 2.
 
-Print Nat.eq_dec.
+Eval compute in lift (app (ind 0) (lam Iota (app (ind 0) (ind 1)))) 2.
 
 (* Az alábbi függvény egy termsorozat minden elemét lifteli (azaz a benne
  szereplő szabad változók indexét emeli eggyel.) *)
