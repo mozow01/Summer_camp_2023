@@ -289,15 +289,15 @@ Eval compute in lift (app (ind 0) (lam Iota (app (ind 0) (ind 1)))) 2.
 (* Az alábbi függvény egy termsorozat minden elemét lifteli (azaz a benne
  szereplő szabad változók indexét emeli eggyel.) *)
 
-Definition lift_subst (s : nat -> Trm) (k : nat) : Trm  :=
+Definition lift_seq (s : nat -> Trm) (k : nat) : Trm  :=
   match k with 
      | 0 => lift (s 0) 1
      | S m => lift (s (S m)) 1
   end.
   
-(* Eltolja a termsorozatot 1-gyel és az első helyre berakja a hyp 0-t. *)
+(* Eltolja a termsorozatot 1-gyel és az első helyre berakja a ind 0-t. *)
 
-Definition shift_subst (s : nat -> Trm) (k : nat) : Trm  :=
+Definition shift_seq (s : nat -> Trm) (k : nat) : Trm  :=
   match k with 
      | 0 => ind 0
      | S m => (s m)
@@ -312,7 +312,7 @@ Fixpoint subst_aux (t : Trm) (n : nat) (s : nat -> Trm) {struct t} : Trm :=
                  | right _ => ind i
                end
     | app M N => app (subst_aux M n s) (subst_aux N n s)
-    | lam A M => lam A (subst_aux M (S n) (shift_subst ( lift_subst s)))
+    | lam A M => lam A (subst_aux M (S n) (shift_seq ( lift_seq s)))
   end.
   
 (* Ugyenez 0-val. *)
@@ -384,9 +384,9 @@ match k with | 0 => P | S _ => ind 0 end)).
  így nem az első, hanem a második szabad változóba kell
  behelyettesíteni.*)
 
-Definition subs_lift_plus_one (t r : Trm) := subst_aux t (S 0) (shift_subst (lift_subst (seq_head r))).
+Definition subs_lift_plus_one (t r : Trm) := subst_aux t (S 0) (shift_seq (lift_seq (seq_head r))).
 
-Definition subs_lift_plus_one' (t r : Trm) := subst_aux t (S 0) ( (lift_subst (seq_head r))).
+Definition subs_lift_plus_one' (t r : Trm) := subst_aux t (S 0) ( (lift_seq (seq_head r))).
 
 Theorem Sub_prop_1 : forall r, (subs (ind 0) r) = r.
 Proof.
