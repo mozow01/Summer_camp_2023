@@ -275,7 +275,7 @@ Fixpoint lift_aux (n : nat) (t : Trm) (k : nat) {struct t} : Trm :=
      | lam A M => lam A (lift_aux n M (S k))
    end.
 
-(* A következő függvény az összes szabad változót lifteli *)
+(* A következő függvény az összes szabad változót lifteli n-nel *)
 
 Definition lift P n := lift_aux n P 0.
 
