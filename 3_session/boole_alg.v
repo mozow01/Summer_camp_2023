@@ -1,7 +1,7 @@
 Require Import List.
 Require Import Bool.
 
-(*Ezek a programok definiálnak egy tárgynyelvet, ami a Boole-algebra negációt és konjunkciót tartalmazó fragmentuma. Majd megadják a szemantikáját. Ezek után egy gépet (veremautómatát) veszünk, amelyik iperatív stílusban programok futtatásával számolja ki a Boole-értéket. A képzeletbeli stack-machine-t a tárnyelv kifejezéseinek programokká való leforsításával lehet etetni és az eredmény, amit a stack-machine kiköp.*)
+(*Ezek a programok definiálnak egy tárgynyelvet, ami a Boole-algebra negációt és konjunkciót tartalmazó fragmentuma. Majd megadják a szemantikáját. Ezek után egy gépet (veremautómatát,rakodógép, raklap-gép) veszünk, amelyik iperatív stílusban programok futtatásával számolja ki a Boole-értéket. A képzeletbeli stack-machine-t a tárnyelv kifejezéseinek programokká való leforsításával lehet etetni és az eredmény, amit a stack-machine kiköp.*)
 
 (*Tárgynyelv: negáció, konjunkció, kifejezések*)
 
